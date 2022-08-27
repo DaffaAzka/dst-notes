@@ -15,11 +15,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Dst Notes',
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
       ),
       home: const Homepage(),
+      routes: {
+        "/login/": (context) => const LoginView(),
+        "/register/": (context) => const RegisterView(),
+      },
     );
   }
 }

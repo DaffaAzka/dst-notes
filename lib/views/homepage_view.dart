@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:dstnotes/constants/routes.dart';
 import 'package:dstnotes/views/verify_email_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -35,7 +36,11 @@ class Homepage extends StatelessWidget {
             }
 
           default:
-            return const CircularProgressIndicator();
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
         }
       },
     );
@@ -67,7 +72,7 @@ class _NotesViewState extends State<NotesView> {
                     await FirebaseAuth.instance.signOut();
                     // ignore: use_build_context_synchronously
                     Navigator.of(context)
-                        .pushNamedAndRemoveUntil('/login/', (_) => false);
+                        .pushNamedAndRemoveUntil(loginRoute, (_) => false);
                   }
                   break;
               }
@@ -75,7 +80,7 @@ class _NotesViewState extends State<NotesView> {
             itemBuilder: (context) {
               return [
                 const PopupMenuItem<MenuAction>(
-                    value: MenuAction.logout, child: const Text("Logout")),
+                    value: MenuAction.logout, child: Text("Logout")),
               ];
             },
           )
@@ -98,12 +103,12 @@ Future<bool> showLogoutDialog(BuildContext context) {
                   onPressed: () {
                     Navigator.of(context).pop(false);
                   },
-                  child: Text("Cancel")),
+                  child: const Text("Cancel")),
               TextButton(
                   onPressed: () {
                     Navigator.of(context).pop(true);
                   },
-                  child: Text("Logout")),
+                  child: const Text("Logout")),
             ]);
       }).then((value) => value ?? false);
 }

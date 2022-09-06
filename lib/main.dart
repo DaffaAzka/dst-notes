@@ -2,6 +2,7 @@ import 'package:dstnotes/constants/routes.dart';
 import 'package:dstnotes/views/homepage_view.dart';
 import 'package:dstnotes/views/login_view.dart';
 import 'package:dstnotes/views/register_view.dart';
+import 'package:dstnotes/views/verify_email_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         loginRoute: (context) => const LoginView(),
         registerRoute: (context) => const RegisterView(),
         notesRoute: (context) => const NotesView(),
+        verifyEmailRoute: (context) => const VerifyEmailView(),
       },
     );
   }

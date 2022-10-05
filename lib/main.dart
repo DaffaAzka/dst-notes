@@ -1,6 +1,6 @@
 import 'package:dstnotes/constants/routes.dart';
 import 'package:dstnotes/services/auth/auth_service.dart';
-import 'package:dstnotes/views/notes/create_view.dart';
+import 'package:dstnotes/views/notes/create_update_view.dart';
 import 'package:dstnotes/views/notes/notes_view.dart';
 import 'package:dstnotes/views/login_view.dart';
 import 'package:dstnotes/views/register_view.dart';
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         registerRoute: (context) => const RegisterView(),
         notesRoute: (context) => const NotesView(),
         verifyEmailRoute: (context) => const VerifyEmailView(),
-        createNoteRoute: (context) => const CreateNoteView(),
+        createOrUpdateNoteRoute: (context) => const CreateUpdateNoteView(),
       },
     );
   }

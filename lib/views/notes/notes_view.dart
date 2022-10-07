@@ -69,6 +69,10 @@ class _NotesViewState extends State<NotesView> {
                     builder: (context, snapshot) {
                       switch (snapshot.connectionState) {
                         case ConnectionState.waiting:
+                          return const Center(
+                            child: Text("Please Refresh the notes...."),
+                          );
+
                         case ConnectionState.active:
                           if (snapshot.hasData) {
                             final allNotes =

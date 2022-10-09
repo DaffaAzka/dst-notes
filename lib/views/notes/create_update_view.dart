@@ -2,7 +2,8 @@ import 'package:dstnotes/utilities/generics/get_arguments.dart';
 import 'package:flutter/material.dart';
 
 import '../../services/auth/auth_service.dart';
-import '../../services/crud/notes_service.dart';
+import '../../services/cloud/cloud_note.dart';
+import '../../services/cloud/firebase_cloud_storage.dart';
 
 class CreateUpdateNoteView extends StatefulWidget {
   const CreateUpdateNoteView({super.key});
@@ -12,13 +13,13 @@ class CreateUpdateNoteView extends StatefulWidget {
 }
 
 class _CreateUpdateNoteView extends State<CreateUpdateNoteView> {
-  DatabaseNote? _note;
-  late final NotesService _notesService;
+  CloudNote? _note;
+  late final FirebaseCloudStorage _notesService;
   late final TextEditingController _textEditingController;
 
   @override
   void initState() {
-    _notesService = NotesService();
+    _notesService = FirebaseCloudStorage();
     _textEditingController = TextEditingController();
     super.initState();
   }
@@ -28,7 +29,8 @@ class _CreateUpdateNoteView extends State<CreateUpdateNoteView> {
     if (note == null) {
       return;
     } else {
-      _notesService.updateNote(note: note, text: _textEditingController.text);
+      _notesService.updateNote(
+          documentId: note.documentId, text: _textEditingController.text);
     }
   }
 
@@ -37,8 +39,8 @@ class _CreateUpdateNoteView extends State<CreateUpdateNoteView> {
     _textEditingController.addListener(_textEditingControllerListener);
   }
 
-  Future<DatabaseNote> creatOrGetExistingNote(BuildContext context) async {
-    final widgetNote = context.getArgument<DatabaseNote>();
+  Future<CloudNote> creatOrGetExistingNote(BuildContext context) async {
+    final widgetNote = context.getArgument<CloudNote>();
 
     if (widgetNote != null) {
       _note = widgetNote;
@@ -51,9 +53,9 @@ class _CreateUpdateNoteView extends State<CreateUpdateNoteView> {
       return exitingNote;
     }
     final currentUser = AuthService.firebase().currentUser!;
-    final email = await _notesService.getUser(email: currentUser.email!);
-    final createNote = await _notesService.createNote(owner: email);
-
+    final userId = currentUser.id;
+    // final email = await _notesService.getUser(email: currentUser.email!);
+    final createNote = await _notesService.createNote(ownerUserId: userId);
     _note = createNote;
     return createNote;
   }
@@ -61,7 +63,7 @@ class _CreateUpdateNoteView extends State<CreateUpdateNoteView> {
   void _deleteNoteIfTextIsEmpty() {
     final note = _note;
     if (_textEditingController.text.isEmpty && note != null) {
-      _notesService.deleteNote(id: note.id);
+      _notesService.deleteNote(documentId: note.documentId);
     }
   }
 
@@ -69,7 +71,7 @@ class _CreateUpdateNoteView extends State<CreateUpdateNoteView> {
     final note = _note;
     if (_textEditingController.text.isNotEmpty && note != null) {
       await _notesService.updateNote(
-          note: note, text: _textEditingController.text);
+          documentId: note.documentId, text: _textEditingController.text);
     }
   }
 
